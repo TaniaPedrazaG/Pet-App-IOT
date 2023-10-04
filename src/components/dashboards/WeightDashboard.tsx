@@ -19,8 +19,8 @@ export const WeightDashboard = () => {
                 type: 'doughnut',
                 data: {
                     labels: [
-                        'Lleno',
-                        'Vacío'
+                        `Tiene ${sensorValue} gr`,
+                        `Faltan ${fullPlate - sensorValue} gr`
                     ],
                     datasets: [{
                         label: 'Peso en gr',
@@ -47,6 +47,8 @@ export const WeightDashboard = () => {
             display={'flex'}
             flexDirection={'column'}
             alignItems={'center'}
+            ml={{xs: 0, sm: 80}}
+            mr={{xs: 0, sm: 80}}
         >
             <Typography variant="h5" fontWeight={600} mb={2}>Peso Plato</Typography>
             <canvas ref={chartRef}/>

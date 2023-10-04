@@ -48,7 +48,7 @@ const Schedule = () => {
         }, 5000);
         setTimeout(() => {
             sendMessage('abrirServo', 'O')
-            router.push('/');
+            router.push('/dashboard');
         }, 10000);
     }
 

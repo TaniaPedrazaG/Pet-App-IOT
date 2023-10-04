@@ -15,7 +15,7 @@ export const HopperDashboard = () => {
                 type: 'bar',
                 data: {
                     datasets: [{
-                        label: 'Con comida',
+                        label: `Con comida ${(hopperTotal - sensorValue).toFixed(2)} cm`,
                         data: [{x: '', y: hopperTotal - sensorValue}],
                         backgroundColor: [
                             '#FF9B00',
@@ -23,7 +23,7 @@ export const HopperDashboard = () => {
                         ],
                     },
                     {
-                        label: 'Sin comida',
+                        label: `Sin comida ${sensorValue} cm`,
                         data: [{x: '', y: sensorValue}],
                         backgroundColor: [
                             '#CBCBCB',
@@ -40,7 +40,8 @@ export const HopperDashboard = () => {
                         y: {
                             stacked: true
                         }
-                    }
+                    },
+                    maintainAspectRatio: false,
                 }
             })
             return () => {
@@ -54,8 +55,9 @@ export const HopperDashboard = () => {
             display={'flex'}
             flexDirection={'column'}
             alignItems={'center'}
-            mt={2}
-            height={500}
+            ml={{xs: 0, sm: 40}}
+            mr={{xs: 0, sm: 40}}
+            height={'calc(100vh - 300px)'}
         >
             <Typography variant="h5" fontWeight={600} mb={2}>Estado Tolva</Typography>
             <canvas ref={chartRef}/>
