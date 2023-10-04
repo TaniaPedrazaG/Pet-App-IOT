@@ -44,15 +44,12 @@ const Schedule = () => {
         localStorage.setItem('weight', JSON.stringify(weight));
         sendMessage('pesoPorcion', weight.toString())
         setTimeout(() => {
-            calculateNextMeal()
+            sendMessage('proximaComida', scheduleTime.toString())
+        }, 5000);
+        setTimeout(() => {
+            sendMessage('abrirServo', 'O')
             router.push('/');
-        }, 7000);
-    }
-
-    const calculateNextMeal = () => {
-        const nextMealTime = '7:00 AM'
-        // const actualTime = new Date()
-        sendMessage('proximaComida', nextMealTime.toString())
+        }, 10000);
     }
 
     const handleReset = () => {

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 import { MqttContext } from '@/contexts';
 import { Chart, registerables } from "chart.js";
 import { Box, Typography } from "@mui/material";

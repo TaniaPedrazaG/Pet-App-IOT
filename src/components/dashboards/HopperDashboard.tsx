@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { MqttContext } from "@/contexts";
 import { Box, Typography } from "@mui/material";
 import { Chart, registerables } from "chart.js";
@@ -7,7 +7,7 @@ export const HopperDashboard = () => {
     const { hopperWeight } = useContext(MqttContext)
     const chartRef = useRef<HTMLCanvasElement>(null);
     const sensorValue = parseFloat(hopperWeight)
-    const hopperTotal = 30;
+    const hopperTotal = 15;
 
     useEffect(() => {
         if (chartRef.current) {

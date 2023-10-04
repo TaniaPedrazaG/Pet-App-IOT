@@ -9,16 +9,8 @@ const ServoButton = () => {
     const [openServo, setOpenServo] = useState(false)
 
     useEffect(() => {
-        switch (openServo) {
-            case true:
-                sendMessage('abrirServo', 'O')
-                break;
-            case false:
-                sendMessage('abrirServo', 'C')
-                break;
-        
-            default:
-                break;
+        if (openServo) {
+            sendMessage('abrirServo', 'O')
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [openServo])

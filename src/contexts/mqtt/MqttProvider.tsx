@@ -16,43 +16,17 @@ export const MqttProvider:FC<PropsWithChildren> = ({ children }) => {
     const [weight, setWeight] = useState('0')
     const [movement, setMovement] = useState('0')
     const [hopperWeight, setHopperWeight] = useState('0')
+    const [reload, setReload] = useState(false)
 
-    const topic_1 = "pesoBalanza";
-    const topic_2 = "movimiento";
-    const topic_3 = "estadoTolva";
-    const topic_4 = "abrirServo";
-    const topic_5 = "pesoPorcion";
-    const topic_6 = "proximaComida";
-
-    useMemo(() => {
-        try {
-            client.connect( {
-                onSuccess: () => { 
-                    console.log("Conectado");
-                    client.subscribe = onSubscribe;
-                    client.onMessageArrived = receiveMessage;
-                },
-                onFailure: () => {
-                    console.error("Fallo la conexión"); 
-                }
-            });
-        } catch (error) {
-            console.error(error)
+    const onConnectionLost = (responseObject: { errorCode: number; errorMessage: string; }) => {
+        if (responseObject.errorCode !== 0) {
+            console.log("Connection Lost: " + responseObject.errorMessage);
+            window.alert("Se ha perdido la conexión, refresque la página");
+            setReload(true)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const onSubscribe = () => {
-        client.subscribe(topic_1);
-        client.subscribe(topic_2);
-        client.subscribe(topic_3);
-        client.subscribe(topic_4);
-        client.subscribe(topic_5);
-        client.subscribe(topic_6);
     }
 
-    const receiveMessage = (newMessage: { destinationName: string; payloadString: string; }) =>{
-        console.log(newMessage.payloadString);
+    const onReceiveMessage = (newMessage: { destinationName: string; payloadString: string; }) =>{
         switch (newMessage.destinationName) {
             case 'pesoBalanza':
                 setWeight(newMessage.payloadString)
@@ -66,6 +40,39 @@ export const MqttProvider:FC<PropsWithChildren> = ({ children }) => {
             default:
                 break;
         }
+    }
+
+    useEffect(() => {
+        try {
+            client.onConnectionLost = onConnectionLost;
+            client.onMessageArrived = onReceiveMessage;
+        } catch (error) {
+            console.error(error)
+        }
+    }, [])
+
+    const onConnect = () => {
+        client.subscribe('pesoBalanza');
+        client.subscribe('movimiento');
+        client.subscribe('estadoTolva');
+        client.subscribe('abrirServo');
+        client.subscribe('pesoPorcion');
+        client.subscribe('proximaComida');
+    }
+
+    const onFail = () => {
+        console.log("Failed to connect");
+    }
+
+    try {
+        const options = {
+            onSuccess: onConnect,
+            onFailure: onFail,
+            useSSL:true
+        }
+        client.connect(options)
+    } catch (error) {
+        console.error(error)
     }
 
     const sendMessage = (topic: string, payload: string) => {
