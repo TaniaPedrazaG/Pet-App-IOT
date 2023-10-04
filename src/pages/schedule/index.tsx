@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { MqttContext } from "@/contexts";
 import { Layout } from "@/components/layouts"
 import {
     Box, Button, Card, CardContent, IconButton, Snackbar, TextField,
@@ -8,6 +9,7 @@ import {
 import { Close } from "@mui/icons-material";
 
 const Schedule = () => {
+    const { sendMessage } = useContext(MqttContext)
     const [mealsQuantity, setMealsQuantity] = useState(1);
     const [scheduleTime, setScheduleTime] = useState(24 / mealsQuantity);
     const [weight, setWeight] = useState(0);
@@ -40,9 +42,17 @@ const Schedule = () => {
         }, 2000);
         localStorage.setItem('quantity', JSON.stringify(mealsQuantity));
         localStorage.setItem('weight', JSON.stringify(weight));
+        sendMessage('pesoPorcion', weight.toString())
         setTimeout(() => {
+            calculateNextMeal()
             router.push('/');
         }, 7000);
+    }
+
+    const calculateNextMeal = () => {
+        const nextMealTime = '7:00 AM'
+        // const actualTime = new Date()
+        sendMessage('proximaComida', nextMealTime.toString())
     }
 
     const handleReset = () => {

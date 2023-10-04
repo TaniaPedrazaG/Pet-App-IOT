@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren } from 'react'
 import Head from 'next/head'
-import { Box } from '@mui/material'
+import { useRouter } from 'next/router';
 import { BottomNav } from '../ui';
 import Navbar from '../ui/Navbar';
-
+import ServoButton from '../ui/ServoButton';
 interface Props extends PropsWithChildren {
     title: string;
     pageDescription: string;
@@ -11,6 +11,8 @@ interface Props extends PropsWithChildren {
 }
 
 export const Layout:FC<Props> = ({ children, title, pageDescription, imageFullUrl }) => {
+    const router = useRouter();
+    
     return (
         <>
             <Head>
@@ -30,6 +32,21 @@ export const Layout:FC<Props> = ({ children, title, pageDescription, imageFullUr
             }}>
                 {children}
             </main>
+            {
+                router.asPath !== '/'
+                    ? <>
+                        <div
+                            style={{
+                                position: 'fixed',
+                                bottom: '70px',
+                                right: '10px',
+                            }}
+                        >
+                            <ServoButton/>
+                        </div>
+                    </>
+                    : <></>
+            }
             <footer
                 style={{
                     position: 'fixed',

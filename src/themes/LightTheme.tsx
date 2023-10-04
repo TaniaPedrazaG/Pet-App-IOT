@@ -11,6 +11,9 @@ export const LightTheme = createTheme({
         },
         info: {
             main: '#FFFFFF'
+        },
+        error: {
+            main: '#FFBA69'
         }
     },
     components: {
@@ -129,6 +132,6 @@ export const LightTheme = createTheme({
                     background: '#FF9B00',
                 }
             }
-        }
+        },
     }
 });
